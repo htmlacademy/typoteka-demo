@@ -8,6 +8,8 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
 import { JwtService } from '@nestjs/jwt';
 import { ClientProxy } from '@nestjs/microservices';
+import { ConfigType } from '@nestjs/config';
+import { jwtOptions } from '../../config/jwt.config';
 
 @Injectable()
 export class AuthService {
@@ -15,6 +17,7 @@ export class AuthService {
     private readonly blogUserRepository: BlogUserRepository,
     private readonly jwtService: JwtService,
     @Inject(RABBITMQ_SERVICE) private readonly rabbitClient: ClientProxy,
+    @Inject (jwtOptions.KEY) private readonly jwtConfig: ConfigType<typeof jwtOptions>,
   ) {}
 
   async register(dto: CreateUserDto) {
@@ -83,6 +86,10 @@ export class AuthService {
 
     return {
       access_token: await this.jwtService.signAsync(payload),
+      refresh_token: await this.jwtService.signAsync(payload, {
+        secret: this.jwtConfig.refreshTokenSecret,
+        expiresIn: this.jwtConfig.refreshTokenExpiresIn,
+      })
     };
   }
 }
