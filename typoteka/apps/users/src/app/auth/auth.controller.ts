@@ -8,7 +8,8 @@ import { UserRdo } from './rdo/user.rdo';
 import { MongoidValidationPipe } from '../pipes/mongoid-validation.pipe';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { RequestWithUser } from '@typoteka/shared-types';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { RequestWithTokenPayload, RequestWithUser } from '@typoteka/shared-types';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -42,6 +43,18 @@ export class AuthController {
   async login(@Req() request: RequestWithUser) {
     const { user } = request;
     return this.authService.loginUser(user);
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get a new access/refresh tokens'
+  })
+  async refresh(@Req() request: RequestWithTokenPayload) {
+    const { user: tokenPayload } = request;
+    return this.authService.loginUser(tokenPayload);
   }
 
   @UseGuards(JwtAuthGuard)
