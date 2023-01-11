@@ -5,4 +5,5 @@ export * from './lib/comment.interface';
 export * from './lib/category.interface';
 export * from './lib/subscriber.interface';
 export * from './lib/command-event.enum';
+export * from './lib/token-payload.interface';
 export * from './lib/request-with-user.interface';
