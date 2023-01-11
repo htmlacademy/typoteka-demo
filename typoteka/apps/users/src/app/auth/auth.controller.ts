@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Req, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { fillObject } from '@typoteka/core';
 import { AuthService } from './auth.service';
@@ -10,7 +10,9 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { RequestWithTokenPayload, RequestWithUser } from '@typoteka/shared-types';
+import { HttpExceptionFilter } from './http.exception-filter';
 
+@UseFilters(HttpExceptionFilter)
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
