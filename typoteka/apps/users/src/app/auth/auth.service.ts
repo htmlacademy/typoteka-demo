@@ -1,4 +1,4 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as dayjs from 'dayjs';
 import { CommandEvent, TokenPayload, User, UserRole } from '@typoteka/shared-types';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -72,7 +72,12 @@ export class AuthService {
   }
 
   async getUser(id: string) {
-    return this.blogUserRepository.findById(id);
+    const existUser = await this.blogUserRepository.findById(id);
+    if (! existUser) {
+      throw new HttpException(`User with the id — ${id} not found`, HttpStatus.NOT_FOUND);
+    }
+
+    return existUser;
   }
 
   async loginUser(user: Pick<User, '_id' | 'email' | 'role' | 'lastname' | 'firstname'>) {
