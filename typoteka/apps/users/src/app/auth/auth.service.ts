@@ -1,8 +1,8 @@
-import { HttpException, HttpStatus, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import * as dayjs from 'dayjs';
 import { CommandEvent, TokenPayload, User, UserRole } from '@typoteka/shared-types';
 import { CreateUserDto } from './dto/create-user.dto';
-import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG, RABBITMQ_SERVICE } from './auth.constant';
+import { RABBITMQ_SERVICE } from './auth.constant';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
@@ -10,6 +10,12 @@ import { JwtService } from '@nestjs/jwt';
 import { ClientProxy } from '@nestjs/microservices';
 import { ConfigType } from '@nestjs/config';
 import { jwtOptions } from '../../config/jwt.config';
+import {
+  UserNotFoundException,
+  UserExistsException,
+  UserNotRegisteredException,
+  UserPasswordWrongException
+} from './exceptions';
 
 @Injectable()
 export class AuthService {
@@ -32,7 +38,7 @@ export class AuthService {
       .findByEmail(email);
 
     if (existUser) {
-      throw new Error(AUTH_USER_EXISTS);
+      throw new UserExistsException(email);
     }
 
     const userEntity = await new BlogUserEntity(blogUser)
@@ -60,12 +66,12 @@ export class AuthService {
     const existUser = await this.blogUserRepository.findByEmail(email);
 
     if (!existUser) {
-      throw new UnauthorizedException(AUTH_USER_NOT_FOUND);
+      throw new UserNotRegisteredException(email);
     }
 
     const blogUserEntity = new BlogUserEntity(existUser);
     if (! await blogUserEntity.comparePassword(password)) {
-      throw new UnauthorizedException(AUTH_USER_PASSWORD_WRONG);
+      throw new UserPasswordWrongException();
     }
 
     return blogUserEntity.toObject();
@@ -74,7 +80,7 @@ export class AuthService {
   async getUser(id: string) {
     const existUser = await this.blogUserRepository.findById(id);
     if (! existUser) {
-      throw new HttpException(`User with the id — ${id} not found`, HttpStatus.NOT_FOUND);
+      throw new UserNotFoundException(id);
     }
 
     return existUser;
