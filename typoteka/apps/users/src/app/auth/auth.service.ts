@@ -1,6 +1,6 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import * as dayjs from 'dayjs';
-import { CommandEvent, User, UserRole } from '@typoteka/shared-types';
+import { CommandEvent, TokenPayload, User, UserRole } from '@typoteka/shared-types';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG, RABBITMQ_SERVICE } from './auth.constant';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
@@ -72,8 +72,8 @@ export class AuthService {
     return this.blogUserRepository.findById(id);
   }
 
-  async loginUser(user: User) {
-    const payload = {
+  async loginUser(user: Pick<User, '_id' | 'email' | 'role' | 'lastname' | 'firstname'>) {
+    const payload: TokenPayload = {
       sub: user._id,
       email: user.email,
       role: user.role,
