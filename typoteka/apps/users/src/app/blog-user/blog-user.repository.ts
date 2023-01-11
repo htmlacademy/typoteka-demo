@@ -23,7 +23,7 @@ export class BlogUserRepository implements CRUDRepository<BlogUserEntity, string
 
   public async findById(id: string): Promise<User | null> {
     return this.blogUserModel
-      .findOne({id})
+      .findOne({_id: id})
       .exec();
   }
 
