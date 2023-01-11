@@ -11,6 +11,7 @@ import { ClientsModule } from '@nestjs/microservices';
 import { RABBITMQ_SERVICE } from './auth.constant';
 import { getRabbitMqConfig } from '../../config/rabbitmq.config';
 import { LocalStrategy } from './strategies/local.strategy';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 
 @Module({
   imports: [
@@ -33,7 +34,8 @@ import { LocalStrategy } from './strategies/local.strategy';
   providers: [
     AuthService,
     JwtStrategy,
-    LocalStrategy
+    LocalStrategy,
+    JwtRefreshStrategy,
   ],
 })
 export class AuthModule {}
