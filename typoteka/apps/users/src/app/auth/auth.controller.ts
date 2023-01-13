@@ -9,7 +9,7 @@ import { MongoidValidationPipe } from '../pipes/mongoid-validation.pipe';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
-import { RequestWithTokenPayload, RequestWithUser } from '@typoteka/shared-types';
+import { RefreshTokenPayload, RequestWithTokenPayload, RequestWithUser } from '@typoteka/shared-types';
 import { HttpExceptionFilter } from './http.exception-filter';
 
 @UseFilters(HttpExceptionFilter)
@@ -54,9 +54,16 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'Get a new access/refresh tokens'
   })
-  async refresh(@Req() request: RequestWithTokenPayload) {
+  async refresh(@Req() request: RequestWithTokenPayload<RefreshTokenPayload>) {
     const { user: tokenPayload } = request;
-    return this.authService.loginUser(tokenPayload);
+
+    return this.authService.loginUser({
+      firstname: tokenPayload.firstname,
+      lastname: tokenPayload.lastname,
+      role: tokenPayload.role,
+      email: tokenPayload.email,
+      _id: tokenPayload.sub
+    }, tokenPayload.refreshTokenId);
   }
 
   @UseGuards(JwtAuthGuard)
