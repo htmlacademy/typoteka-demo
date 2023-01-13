@@ -12,11 +12,13 @@ import { RABBITMQ_SERVICE } from './auth.constant';
 import { getRabbitMqConfig } from '../../config/rabbitmq.config';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
+import { RefreshTokenModule } from '../refresh-token/refresh-token.module';
 
 @Module({
   imports: [
     BlogUserModule,
     PassportModule,
+    RefreshTokenModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
