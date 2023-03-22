@@ -2,7 +2,9 @@ import { CRUDRepository } from '@project/util/util-types';
 import { BlogUserEntity } from './blog-user.entity';
 import { User } from '@project/shared/app-types';
 import { randomUUID } from 'node:crypto';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class BlogUserMemoryRepository implements CRUDRepository<BlogUserEntity, string, User> {
   private repository: Record<string, User> = {};
 
