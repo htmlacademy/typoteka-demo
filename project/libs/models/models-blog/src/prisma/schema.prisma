@@ -19,6 +19,7 @@ model Post {
   createdAt   DateTime   @default(now()) @map("created_at")
   publishAt   DateTime   @updatedAt @map("publish_at")
   userId      String?    @map("user_id")
+  comments    Comment[]
 
   @@map("posts")
 }
@@ -29,4 +30,16 @@ model Category {
   posts      Post[]
 
   @@map("categories")
+}
+
+model Comment {
+  commentId Int      @id @default(autoincrement()) @map("comment_id")
+  message   String
+  userId    String   @map("user_id")
+  post      Post     @relation(fields: [postId], references: [postId], onDelete: Cascade, onUpdate: Cascade)
+  postId    Int      @map("post_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("comments")
 }
