@@ -86,6 +86,13 @@
         "command": "npx prisma generate --schema ./schema.prisma",
         "cwd": "libs/models/models-blog/src/prisma"
       }
+    },
+    "db:seed": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx ts-node seed.ts",
+        "cwd": "libs/models/models-blog/src/prisma"
+      }
     }
   },
   "tags": []
