@@ -1,7 +1,12 @@
 import { Module } from '@nestjs/common';
+import { FileModule } from './file/file.module';
+import { ConfigUploaderModule } from '@project/config/config-uploader';
 
 @Module({
-  imports: [],
+  imports: [
+    FileModule,
+    ConfigUploaderModule
+  ],
   controllers: [],
   providers: [],
 })
