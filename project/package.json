@@ -20,6 +20,7 @@
     "dayjs": "1.11.7",
     "fs-extra": "11.1.1",
     "joi": "17.9.1",
+    "mime-types": "2.1.35",
     "mongoose": "7.0.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
