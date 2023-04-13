@@ -1,5 +1,5 @@
 import { BlogCategoryService } from './blog-category.service';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { fillObject } from '@project/util/util-core';
 import { CategoryRdo } from './rdo/category.rdo';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -12,7 +12,7 @@ export class BlogCategoryController {
   ) {}
 
   @Get('/:id')
-  async show(@Param('id', ParseIntPipe) id: number) {
+  async show(@Param('id') id: number) {
     const existCategory = await this.blogCategoryService.getCategory(id);
     return fillObject(CategoryRdo, existCategory);
   }
@@ -31,12 +31,12 @@ export class BlogCategoryController {
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async destroy(@Param('id', ParseIntPipe) id: number) {
+  async destroy(@Param('id') id: number) {
     this.blogCategoryService.deleteCategory(id);
   }
 
   @Patch('/:id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCategoryDto) {
+  async update(@Param('id') id: number, @Body() dto: UpdateCategoryDto) {
     const updatedCategory = await this.blogCategoryService.updateCategory(id, dto)
     return fillObject(CategoryRdo, updatedCategory);
   }
