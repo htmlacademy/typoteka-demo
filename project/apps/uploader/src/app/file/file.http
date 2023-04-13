@@ -7,4 +7,10 @@ Content-Disposition: form-data; name="file"; filename="file.http"
 
 < ./file.http
 
+
+###
+
+# Get file by ID
+GET http://localhost:3333/api/files/6437c9bdaa7ff52ac6fbe090 HTTP/1.1
+
 ###
