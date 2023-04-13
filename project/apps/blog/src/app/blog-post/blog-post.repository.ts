@@ -3,6 +3,7 @@ import { CRUDRepository } from '@project/util/util-types';
 import { BlogPostEntity } from './blog-post.entity';
 import { Post } from '@project/shared/app-types';
 import { PrismaService } from '../prisma/prisma.service';
+import { PostQuery } from './query/post.query';
 
 @Injectable()
 export class BlogPostRepository implements CRUDRepository<BlogPostEntity, number, Post> {
@@ -48,12 +49,26 @@ export class BlogPostRepository implements CRUDRepository<BlogPostEntity, number
     });
   }
 
-  public find(): Promise<Post[]> {
+  public find({limit, categories, sortDirection, page}: PostQuery): Promise<Post[]> {
     return this.prisma.post.findMany({
+      where: {
+        categories: {
+          some: {
+            categoryId: {
+              in: categories
+            }
+          }
+        }
+      },
+      take: limit,
       include: {
         comments: true,
         categories: true
-      }
+      },
+      orderBy: [
+        { createdAt: sortDirection }
+      ],
+      skip: page > 0 ? limit * (page - 1) : undefined,
     });
   }
 

@@ -2,7 +2,7 @@ import { Entity } from '@project/util/util-types';
 import { Category } from '@project/shared/app-types';
 
 export class BlogCategoryEntity implements Entity<BlogCategoryEntity>, Category {
-  public id: number;
+  public categoryId: number;
   public title: string;
 
   constructor(category: Category) {
@@ -11,7 +11,7 @@ export class BlogCategoryEntity implements Entity<BlogCategoryEntity>, Category 
 
   public fillEntity(entity: Category) {
     this.title = entity.title;
-    this.id = entity.id;
+    this.categoryId = entity.categoryId;
   }
 
   public toObject(): BlogCategoryEntity {
