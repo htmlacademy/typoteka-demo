@@ -5,8 +5,8 @@ services:
     container_name: "typoteka.notify.fakesmtp"
     hostname: "fakesmtp"
     ports:
-      - "5025:5025"
-      - "1083:5080"
+      - "8025:8025"
+      - "1083:8080"
 
   typoteka.notify.rabbitmq:
     image: rabbitmq:3.11-management
