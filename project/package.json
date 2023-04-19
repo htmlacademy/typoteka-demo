@@ -5,6 +5,7 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@golevelup/nestjs-rabbitmq": "3.6.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "2.2.0",
     "@nestjs/core": "^9.0.0",
