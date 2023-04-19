@@ -24,7 +24,7 @@ export default registerAs('application', (): UploaderConfig => {
     serveRoot: process.env.SERVE_ROOT,
     environment: process.env.NODE_ENV,
     uploadDirectory: process.env.UPLOAD_DIRECTORY_PATH,
-    port: parseInt(process.env.POR || DEFAULT_PORT.toString(), 10),
+    port: parseInt(process.env.PORT || DEFAULT_PORT.toString(), 10),
     db: {
       host: process.env.MONGO_HOST,
       port: parseInt(process.env.MONGO_PORT ?? DEFAULT_MONGO_PORT.toString(), 10),
