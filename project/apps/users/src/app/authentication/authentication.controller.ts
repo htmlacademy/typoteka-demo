@@ -10,6 +10,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { NotifyService } from '../notify/notify.service';
 import { LocalAuthGuard } from './guards/local-auth-guard';
 import { RequestWithUser } from '@project/shared/app-types';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -58,4 +59,16 @@ export class AuthenticationController {
     const existUser = await this.authService.getUser(id);
     return fillObject(UserRdo, existUser);
   }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Get a new access/refresh tokens'
+  })
+  public async refreshToken(@Req() { user }: RequestWithUser) {
+    return this.authService.createUserToken(user);
+  }
+
 }
