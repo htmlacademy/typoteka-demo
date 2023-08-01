@@ -20,6 +20,7 @@ model Post {
   publishAt   DateTime   @updatedAt @map("publish_at")
   userId      String?    @map("user_id")
   comments    Comment[]
+  favorite    Favorite[]
 
   @@map("posts")
 }
@@ -42,4 +43,15 @@ model Comment {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("comments")
+}
+
+model Favorite {
+  favoriteId Int      @id @default(autoincrement()) @map("favorite_id")
+  post       Post     @relation(fields: [postId], references: [postId], onDelete: Cascade)
+  postId     Int      @map("post_id")
+  userId     String   @map("user_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("favorites")
 }
