@@ -11,11 +11,12 @@ datasource db {
 }
 
 model Post {
-  postId      Int      @id @default(autoincrement())
+  postId      Int      @id @default(autoincrement()) @map("post_id")
   title       String   @default("")
   description String   @default("")
   content     String   @default("")
-  createdAt   DateTime @default(now())
-  publishAt   DateTime @updatedAt
-  userId      String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  publishAt   DateTime @updatedAt @map("publish_at")
+  userId      String?  @map("user_id")
+  @@map("posts")
 }
