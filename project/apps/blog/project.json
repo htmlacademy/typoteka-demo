@@ -58,6 +58,13 @@
           "codeCoverage": true
         }
       }
+    },
+    "db:lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx prisma validate --schema ./schema.prisma",
+        "cwd": "libs/models/blog-models/prisma"
+      }
     }
   },
   "tags": []
