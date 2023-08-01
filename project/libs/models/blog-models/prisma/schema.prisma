@@ -11,12 +11,22 @@ datasource db {
 }
 
 model Post {
-  postId      Int      @id @default(autoincrement()) @map("post_id")
-  title       String   @default("")
-  description String   @default("")
-  content     String   @default("")
-  createdAt   DateTime @default(now()) @map("created_at")
-  publishAt   DateTime @updatedAt @map("publish_at")
-  userId      String?  @map("user_id")
+  postId      Int        @id @default(autoincrement()) @map("post_id")
+  categories  Category[]
+  title       String     @default("")
+  description String     @default("")
+  content     String     @default("")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  publishAt   DateTime   @updatedAt @map("publish_at")
+  userId      String?    @map("user_id")
+
   @@map("posts")
+}
+
+model Category {
+  categoryId Int    @id @default(autoincrement()) @map("category_id")
+  title      String
+  posts      Post[]
+
+  @@map("categories")
 }
