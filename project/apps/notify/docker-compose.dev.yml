@@ -22,3 +22,34 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  typoteka.notify.mongodb:
+    image: mongo
+    container_name: typoteka.notify.mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: test
+      MONGO_INITDB_DATABASE: typoteka-notify
+    ports:
+      - 27020:27017
+    volumes:
+      - typoteka.notify.mongodb:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/typoteka-notify --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  typoteka.notify.mongodb.ui:
+    image: mongo-express
+    restart: always
+    container_name: typoteka.notify.mongodb.ui
+    ports:
+      - 8083:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: test
+      ME_CONFIG_MONGODB_URL: mongodb://admin:test@typoteka.notify.mongodb:27017/
+
+volumes:
+  typoteka.notify.mongodb:
