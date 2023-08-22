@@ -13,6 +13,7 @@ import { LocalStrategy } from './strategies/local.strategy';
   imports: [
     BlogUserModule,
     JwtModule.registerAsync({
+      imports: [],
       inject: [ConfigService],
       useFactory: getJwtOptions
     }),
