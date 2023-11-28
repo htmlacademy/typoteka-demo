@@ -1,0 +1,57 @@
+{
+  "name": "file-vault",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/file-vault/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/file-vault",
+        "main": "apps/file-vault/src/main.ts",
+        "tsConfig": "apps/file-vault/tsconfig.app.json",
+        "assets": ["apps/file-vault/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/file-vault/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "file-vault:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "file-vault:build:development"
+        },
+        "production": {
+          "buildTarget": "file-vault:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/file-vault/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/file-vault/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
