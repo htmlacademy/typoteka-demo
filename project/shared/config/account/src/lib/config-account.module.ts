@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import applicationConfig from './app.config';
+import mongoConfig from './mongo.config';
 
 const ENV_USERS_FILE_PATH = 'apps/account/account.env';
 
@@ -9,8 +10,7 @@ const ENV_USERS_FILE_PATH = 'apps/account/account.env';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      // TODO: Передать список конфигураций для загрузки
-      load: [applicationConfig],
+      load: [applicationConfig, mongoConfig],
       envFilePath: ENV_USERS_FILE_PATH
     }),
   ]
