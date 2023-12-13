@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import applicationConfig from './app.config';
 
 const ENV_USERS_FILE_PATH = 'apps/account/account.env';
 
@@ -9,7 +10,7 @@ const ENV_USERS_FILE_PATH = 'apps/account/account.env';
       isGlobal: true,
       cache: true,
       // TODO: Передать список конфигураций для загрузки
-      load: [],
+      load: [applicationConfig],
       envFilePath: ENV_USERS_FILE_PATH
     }),
   ]
