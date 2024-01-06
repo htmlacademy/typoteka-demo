@@ -4,3 +4,5 @@ export * from './lib/auth-user.interface';
 export * from './lib/category.interface';
 export * from './lib/comment.interface';
 export * from './lib/post.interface';
+export * from './lib/sort-direction.interface';
+export * from './lib/pagination.interface';
