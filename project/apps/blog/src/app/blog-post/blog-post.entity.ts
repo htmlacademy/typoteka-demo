@@ -14,4 +14,18 @@ export class BlogPostEntity implements Post, Entity<string, Post> {
   public comments: BlogCommentEntity[];
   public categories: BlogCategoryEntity[];
   public description: string;
+
+  public populate(data: Post): BlogPostEntity {
+    this.id = data.id ?? undefined;
+    this.title = data.title;
+    this.createdAt = data.createdAt ?? undefined;
+    this.updatedAt = data.updatedAt ?? undefined;
+    this.description = data.description;
+    this.content = data.content;
+    this.comments = [];
+    this.userId = data.userId;
+    this.categories = data.categories.map((category) => BlogCategoryEntity.fromObject(category));
+
+    return this;
+  }
 }
