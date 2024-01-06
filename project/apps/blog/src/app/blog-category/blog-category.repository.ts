@@ -67,4 +67,16 @@ export class BlogCategoryRepository extends BasePostgresRepository<BlogCategoryE
 
     return this.createEntityFromDocument(updatedCategory);
   }
+
+  public async findByIds(ids: string[]): Promise<BlogCategoryEntity[]> {
+    const records = await this.client.category.findMany({
+      where: {
+        id: {
+          in: ids,
+        }
+      }
+    });
+
+    return records.map((record) => this.createEntityFromDocument(record));
+  }
 }
