@@ -28,4 +28,18 @@ export class BlogPostEntity implements Post, Entity<string, Post> {
 
     return this;
   }
+
+  public toPOJO(): Post {
+    return {
+      id: this.id,
+      title: this.title,
+      userId: this.userId,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      content: this.content,
+      description: this.description,
+      comments: [],
+      categories: this.categories.map((categoryEntity) => categoryEntity.toPOJO()),
+    }
+  }
 }
