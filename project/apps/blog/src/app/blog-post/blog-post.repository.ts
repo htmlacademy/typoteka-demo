@@ -60,5 +60,24 @@ export class BlogPostRepository extends BasePostgresRepository<BlogPostEntity, P
     return this.createEntityFromDocument(document);
   }
 
+  public async update(id: string, entity: BlogPostEntity): Promise<BlogPostEntity> {
+    const pojoEntity = entity.toPOJO();
+    const updatedPost = await this.client.post.update({
+      where: { id },
+      data: {
+        title: pojoEntity.title,
+        content: pojoEntity.content,
+        description: pojoEntity.description,
+        categories: {
+          set: pojoEntity.categories.map((category) => ({ id: category.id })),
+        }
+      },
+      include: {
+        categories: true,
+        comments: true,
+      }
+    });
 
+    return this.createEntityFromDocument(updatedPost);
+  }
 }
