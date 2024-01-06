@@ -42,4 +42,21 @@ export class BlogPostEntity implements Post, Entity<string, Post> {
       categories: this.categories.map((categoryEntity) => categoryEntity.toPOJO()),
     }
   }
+
+  static fromObject(data: Post): BlogPostEntity {
+    return new BlogPostEntity()
+      .populate(data);
+  }
+
+  static fromDto(dto: CreatePostDto, categories: BlogCategoryEntity[]): BlogPostEntity {
+    const entity = new BlogPostEntity();
+    entity.categories = categories;
+    entity.title = dto.title;
+    entity.description = dto.description;
+    entity.content = dto.content;
+    entity.userId = dto.userId;
+    entity.comments = [];
+
+    return entity;
+  }
 }
