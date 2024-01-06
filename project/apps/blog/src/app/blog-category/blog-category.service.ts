@@ -51,4 +51,19 @@ export class BlogCategoryService {
       throw new NotFoundException(`Category with ID ${id} not found`);
     }
   }
+
+  public async getCategoriesByIds(categoryIds: string[]): Promise<BlogCategoryEntity[]> {
+    const categories = await this.blogCategoryRepository.findByIds(categoryIds);
+
+    if (categories.length !== categoryIds.length) {
+      const foundCategoryIds = categories.map((category) => category.id);
+      const notFoundCategoryIds = categoryIds.filter((categoryId) => !foundCategoryIds.includes(categoryId));
+
+      if (notFoundCategoryIds.length > 0) {
+        throw new NotFoundException(`Categories with ids ${notFoundCategoryIds.join(', ')} not found.`);
+      }
+    }
+
+    return categories;
+  }
 }
