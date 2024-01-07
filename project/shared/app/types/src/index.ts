@@ -8,3 +8,5 @@ export * from './lib/sort-direction.interface';
 export * from './lib/pagination.interface';
 export * from './lib/token-payload.interface';
 export * from './lib/token.interface';
+export * from './lib/file.interface';
+export * from './lib/stored-file.interface';
