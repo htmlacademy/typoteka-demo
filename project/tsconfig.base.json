@@ -21,6 +21,7 @@
       "@project/shared/config/file-vault": [
         "shared/config/file-vault/src/index.ts"
       ],
+      "@project/shared/config/notify": ["shared/config/notify/src/index.ts"],
       "@project/shared/core": ["shared/core/src/index.ts"],
       "@project/shared/helpers": ["shared/helpers/src/index.ts"]
     }
