@@ -12,3 +12,4 @@ export * from './lib/file.interface';
 export * from './lib/stored-file.interface';
 export * from './lib/subscriber.interface';
 export * from './lib/rabbit-routing.enum';
+export * from './lib/jwt-token.interface';
