@@ -7,13 +7,15 @@ import dayjs from 'dayjs';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigType } from '@nestjs/config';
 
-import { Token, TokenPayload, User, UserRole } from '@project/shared/app/types';
+import { Token, User, UserRole } from '@project/shared/app/types';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AUTH_USER_EXISTS, AUTH_USER_NOT_FOUND, AUTH_USER_PASSWORD_WRONG } from './authentication.constant';
 import { BlogUserEntity } from '../blog-user/blog-user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { jwtConfig } from '@project/shared/config/account';
+import { RefreshTokenService } from '../refresh-token/refresh-token.service';
+import { createJWTPayload } from '@project/shared/helpers';
 
 
 @Injectable()
@@ -25,6 +27,7 @@ export class AuthenticationService {
     private readonly blogUserRepository: BlogUserRepository,
     private readonly jwtService: JwtService,
     @Inject (jwtConfig.KEY) private readonly jwtOptions: ConfigType<typeof jwtConfig>,
+    private readonly refreshTokenService: RefreshTokenService,
   ) {
   }
 
@@ -87,17 +90,12 @@ export class AuthenticationService {
   }
 
   public async createUserToken(user: User): Promise<Token> {
-    const payload: TokenPayload = {
-      sub: user.id,
-      email: user.email,
-      role: user.role,
-      lastname: user.lastname,
-      firstname: user.firstname,
-    };
+    const accessTokenPayload = createJWTPayload(user);
+    const refreshTokenPayload = { ...accessTokenPayload, tokenId: crypto.randomUUID() };
 
     try {
-      const accessToken = await this.jwtService.signAsync(payload);
-      const refreshToken = await this.jwtService.signAsync(payload, {
+      const accessToken = await this.jwtService.signAsync(accessTokenPayload);
+      const refreshToken = await this.jwtService.signAsync(refreshTokenPayload, {
         secret: this.jwtOptions.refreshTokenSecret,
         expiresIn: this.jwtOptions.refreshTokenExpiresIn
       });
